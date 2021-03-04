@@ -1,0 +1,185 @@
+#Enable Compatibility with Xorg Applications
+xwayland enable
+#Run dunst
+exec dunst
+#xclip
+exec xclip
+exec pavucontrol
+#Basic Config
+
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+set $term alacritty
+#set $menu dmenu_run -f -p ">>> " -nb "#282a36" -sf "#f8f8f2" -nf "#f8f8f2" -sb "#6272a4" -fn "Fira Code -12"
+set $menu rofi -show run
+gaps inner 10
+gaps outer 12
+default_border pixel 1
+titlebar_border_thickness 1
+titlebar_padding 15 8
+
+#Colors
+
+# class                   border  bg      text    ind     child
+client.background                 #161616
+client.focused            #bd93f9 #458588 #FFFFFF #458588 #458588
+client.unfocused          #323440 #161616 #a89984 #323440 #323440
+client.focused_inactive   #bd93f9 #1b1c22 #458588 #323440 #323440
+client.urgent             #ff5555 #ff5555 #ff5555 #ff5555 #ff5555
+
+#swayidle
+
+exec swayidle -w \
+  timeout 120 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on"' \
+  timeout 30 'if pgrep swaylock; then swaymsg "output * dpms off"; fi' \
+  resume 'if pgrep swaylock; then swaymsg "output * dpms on"; fi' \
+  before-sleep 'swaylock --screenshots --indicator --indicator-radius 50 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.8 --ring-color cc241d --key-hl-color cc241d --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.2'
+
+#Set Wallpaper
+
+output "*" bg /home/maxi/Schreibtisch/nitrogen\ wallpapers/void.png fill
+
+#Keyboard Configuration and Keybinds
+
+input * {
+    xkb_layout "de"
+    xkb_variant "colemak,,typewriter"
+    xkb_options "grp:win_space_toggle"
+}
+
+input <identifier> xkb_model "pc101"
+
+input <identifier> repeat_delay 100
+input <identifier> repeat_rate 20
+
+#swaylock
+
+    bindsym $mod+p exec 'swaylock --screenshots --indicator --indicator-radius 50 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.8 --ring-color cc241d --key-hl-color cc241d --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2'
+    bindswitch lid:off exec 'swaylock --screenshots --indicator --indicator-radius 50 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.8 --ring-color cc241d --key-hl-color cc241d --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.2'
+
+#Basic Keybinds
+
+    bindsym $mod+n exec nheko
+    bindsym $mod+b exec librewolf
+    bindsym $mod+e exec emacs
+    bindsym Control+e exec /home/maxi/splatmoji/splatmoji copy
+    bindsym $mod+Return exec $term
+    bindsym $mod+q kill
+    bindsym $mod+d exec $menu
+    floating_modifier $mod normal
+    bindsym $mod+Shift+r reload
+    bindsym $mod+Shift+e exec swaynag -t warning \
+      -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.'\
+      -b 'Yes, exit sway' 'swaymsg exit'
+
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+
+    bindsym $mod+w layout tabbed
+    bindsym $mod+f fullscreen
+    bindsym $mod+Shift+space floating toggle
+    bindsym $mod+space focus mode_toggle3
+    bindsym $mod+a focus parent
+    bindsym $mod+Shift+minus move scratchpad
+    bindsym $mod+minus scratchpad show
+
+
+#Resize Mode
+
+bindsym $mod+r mode "resize"
+mode "resize" {
+    bindsym $left resize shrink width 40px
+    bindsym $down resize grow height 40px
+    bindsym $up resize shrink height 40px
+    bindsym $right resize grow width 40px
+    bindsym Left resize shrink width 40px
+    bindsym Down resize grow height 40px
+    bindsym Up resize shrink height 40px
+    bindsym Right resize grow width 40px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+#Keybinds for Buttons on e.g. Laptops
+
+bindsym XF86AudioRaiseVolume exec pamixer Master -i 5
+bindsym XF86AudioLowerVolume exec pamixer Master -d 5
+bindsym XF86AudioMute exec pamixer --set-volume 0
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+
+
+bindsym XF86Favorites exec $term
+bindsym XF86Display exec $term
+
+bindcode 444 exec $term
+bindcode 445 exec $term
+bindcode 446 exec $term
+
+#Screenshotting
+
+bindsym Print            exec grimshot save output grimscreen.png
+bindsym $mod+Print       exec grimshot copy area
+bindsym $mod+Shift+Print exec grimshot save window grimscreen.png
+
+#swaybar
+
+bar {
+    position top
+    status_command ~/bin/waystatus
+    tray_output none
+    colors {
+    	#Color of text on status bar
+    	statusline #F8F8F2
+	#Background color of status bar
+	background #282A36
+			     #border background foreground
+    	focused_workspace    #44475A #44475A #F8F8F2
+	active_workspace     #282A36 #44475A #F8F8F2
+	inactive_workspace   #282A36 #282A36 #BFBFBF
+	urgent_workspace     #FF5555 #FF5555 #F8F8F2
+	binding_mode	     #FF5555 #FF5555 #F8F8F2
+    }
+    font pango:Cascadia Code Bold 10
+}
